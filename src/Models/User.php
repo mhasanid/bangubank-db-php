@@ -10,7 +10,7 @@ class User {
     public function __construct(
         public string $name,
         public string $email,
-        private string $password,
+        public string $password,
         public string $role = self::CUSTOMER_USER
     ) {
 

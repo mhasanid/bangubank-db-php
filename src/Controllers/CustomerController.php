@@ -4,24 +4,35 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Databases\BalanceStorage;
-use App\Databases\JsonFileProcessor;
+use App\Databases\DbProcessor\MySQLProcessorBalance;
+use App\Databases\DbProcessor\MySQLProcessorTransaction;
+use App\Databases\DbProcessor\MySQLProcessorUser;
+use App\Databases\FileProcessor\FileProcessorBalance;
+use App\Databases\FileProcessor\FileProcessorTransaction;
+use App\Databases\FileProcessor\FileProcessorUser;
 use App\Databases\TransactionStorage;
 use App\Databases\UserStorage;
 use App\Models\Transaction;
-use App\Models\User;
 use App\Utils\Utility;
 
 class CustomerController extends Controller {
-    
     private TransactionStorage $transactionHelper;
     private BalanceStorage $balanceHelper;
     private UserStorage $userHelper;
 
     public function __construct()
     {
-        $this->transactionHelper = new TransactionStorage(new JsonFileProcessor(JsonFileProcessor::TRANSACTION_FILE_PATH));
-        $this->balanceHelper = new BalanceStorage(new JsonFileProcessor(JsonFileProcessor::BALANCE_FILE_PATH));
-        $this->userHelper = new UserStorage(new JsonFileProcessor(JsonFileProcessor::USER_FILE_PATH));
+        $config = require __DIR__ .'/../../config/config.php';
+        $storage = $config['storage'];
+        if($storage==='database'){
+            $this->transactionHelper = new TransactionStorage(new MySQLProcessorTransaction());
+            $this->balanceHelper = new BalanceStorage(new MySQLProcessorBalance());
+            $this->userHelper = new UserStorage(new MySQLProcessorUser());
+        }else if($storage==='file'){
+            $this->transactionHelper = new TransactionStorage(new FileProcessorTransaction());
+            $this->balanceHelper = new BalanceStorage(new FileProcessorBalance());
+            $this->userHelper = new UserStorage(new FileProcessorUser());
+        }
     }
 
     public function transactions() {

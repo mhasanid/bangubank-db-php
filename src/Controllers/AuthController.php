@@ -4,7 +4,10 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Databases\BalanceStorage;
-use App\Databases\JsonFileProcessor;
+use App\Databases\DbProcessor\MySQLProcessorBalance;
+use App\Databases\DbProcessor\MySQLProcessorUser;
+use App\Databases\FileProcessor\FileProcessorBalance;
+use App\Databases\FileProcessor\FileProcessorUser;
 use App\Models\User;
 use App\Databases\UserStorage;
 use App\Models\Balance;
@@ -16,8 +19,15 @@ class AuthController extends Controller {
 
     public function __construct()
     {
-        $this->userHelper = new UserStorage(new JsonFileProcessor(JsonFileProcessor::USER_FILE_PATH));
-        $this->balanceHelper = new BalanceStorage(new JsonFileProcessor(JsonFileProcessor::BALANCE_FILE_PATH));
+        $config = require __DIR__ .'/../../config/config.php';
+        $storage = $config['storage'];
+        if($storage==='database'){
+            $this->userHelper = new UserStorage(new MySQLProcessorUser());
+            $this->balanceHelper = new BalanceStorage(new MySQLProcessorBalance());
+        }else if($storage==='file'){
+            $this->userHelper = new UserStorage(new FileProcessorUser());
+            $this->balanceHelper = new BalanceStorage(new FileProcessorBalance());
+        }
     }
 
     public function showHomepage() {
@@ -100,7 +110,7 @@ class AuthController extends Controller {
     }
 
     private function showLoggedinUserDashboard():bool{
-        $user_email = $_SESSION['user'] ?: null;
+        $user_email = $_SESSION['user'] ?? null;
         if(!$user_email){
             return false;
         }

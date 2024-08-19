@@ -1,5 +1,5 @@
 <?php
-namespace App\Databases;
+namespace App\Databases\FileProcessor;
 
 use App\Databases\Interfaces\UserInterface;
 use App\Models\User;
@@ -56,7 +56,7 @@ class FileProcessorUser implements UserInterface {
     }
 
     public function saveUser(User $user): bool {
-        $users = $this->all();
+        $users = $this->readDataFromFile();
         if($this->isUserExist($user)){
             return false;
         }
