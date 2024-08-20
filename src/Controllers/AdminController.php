@@ -74,7 +74,7 @@ class AdminController extends Controller {
     public function showCustomers() {
         $email = $_SESSION['user'];
         $loggedinUser = $this->userHelper->findByEmail($email);
-        $customers = $this->userHelper->findAllByRole('customer');
+        $customers = $this->userHelper->findAllByRole('customer')??null;
         if(!$loggedinUser){
             $this->redirect('login');
         }
@@ -123,7 +123,7 @@ class AdminController extends Controller {
             Utility::flash('error','Error occured! User cannot be added.');
             $this->redirect('admin/add-customer');
         }
-        Utility::dd(Utility::flash('error'));
+        // Utility::dd(Utility::flash('error'));
         $userBalance = $this->balanceHelper->getBalanceByEmail($user->email);
         if(!$userBalance){
             $this->balanceHelper->save(new Balance($user->email));

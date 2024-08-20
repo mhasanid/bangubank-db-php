@@ -269,7 +269,15 @@
               <!-- Users List -->
               <div class="flow-root mt-8">
                 <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                  <?php if (!empty($customers)): ?>
+                  <?php if (empty($customers)): ?>
+                    <ul> 
+                    <li class="relative flex justify-between px-4 py-5 gap-x-6 hover:bg-gray-50 sm:px-6 lg:px-8">
+                      <p class="text-xl font-semibold leading-6 text-gray-900">
+                        No customers found.
+                      </p>
+                    </li>
+                    </ul>
+                  <?php else: ?>
                     <ul
                       role="list"
                       class="divide-y divide-gray-100">
@@ -298,8 +306,7 @@
                         </li>
                       <?php endforeach; ?>
                     </ul>
-                  <?php else: ?>
-                    <p>No customers found.</p>
+                    
                   <?php endif; ?>
                 </div>
               </div>

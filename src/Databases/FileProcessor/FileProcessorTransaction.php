@@ -19,7 +19,7 @@ class FileProcessorTransaction implements TransactionInterface {
 
     public function getTransactionByEmail(string $email): array{
         $transactions = $this->readDataFromFile();
-        Utility::dd($transactions);
+        // Utility::dd($transactions);
         return array_filter($transactions, function ($transaction) use ($email) {
             return $transaction['userEmail'] === $email;
         });

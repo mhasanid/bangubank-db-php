@@ -1,5 +1,7 @@
 <?php
 
+// options: 'file', 'database'
 return [
-    'storage' => 'database', // options: 'file', 'database'
+    // 'storage' => 'file', 
+    'storage' => 'database', 
 ];

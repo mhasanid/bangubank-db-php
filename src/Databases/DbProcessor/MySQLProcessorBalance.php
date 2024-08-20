@@ -10,25 +10,9 @@ class MySQLProcessorBalance implements BalanceInterface {
     private PDO $pdo;
 
     public function __construct() {
-        // $this->pdo = $this->createPDOInstance();
-        // $this->createTableIfNotExists();
         $this->pdo = DatabaseConnection::getInstance()->getConnection();
         $this->createTableIfNotExists();
     }
-
-    // private function createPDOInstance(): PDO {
-    //     $dsn = 'mysql:host=localhost;dbname=bangubank;charset=utf8mb4';
-    //     $username = 'admin';
-    //     $password = 'admin1234';
-
-    //     try {
-    //         return new PDO($dsn, $username, $password);
-    //     } catch (PDOException $e) {
-    //         echo phpinfo();
-    //         echo "Error connecting to database: " . $e->getMessage();
-    //         exit;
-    //     }
-    // }
 
     private function createTableIfNotExists(): void {
         $sql = "

@@ -44,7 +44,8 @@ while ($option !== 0) {
                     continue 2;
                 }
                 if($userHelper->save($adminUser)){
-                    echo "Admin User created Successfully.\n";
+                    echo "\nAdmin User created Successfully.\n";
+                    break 2;
                 }
 
             }
